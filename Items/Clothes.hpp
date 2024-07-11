@@ -5,29 +5,26 @@
 #include <memory>
 #include <iostream>
 
+char* EmptyItemName = "";
+
 class Clothes : public BaseItem
 {
 public:
-    Clothes():
-        m_id(1),
-        m_type(0)
-    {};
+    Clothes();
+
+    Clothes(short type, char* name);
 
     short getType() const {return m_type;};
     unsigned long getItemId() const {return m_id;};
+    char* getName() const {return m_name;};
 
 private:
     short m_type;
     unsigned long m_id;
+    char* m_name;
 
 };
 
 using pClothes = std::shared_ptr<Clothes>;
-
-std::ostream& operator<<(std::ostream& os, const Clothes& dt)
-{
-    os << "Type: " << dt.getType() << " / Id: " << dt.getItemId() << "\n";
-    return os;
-}
 
 #endif
