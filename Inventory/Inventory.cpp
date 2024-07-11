@@ -18,6 +18,9 @@ void Inventory::removeItem(pBaseItem item)
 
 void Inventory::moveItem(pBaseItem item, pInventory other_inventory)
 {
+    pItemsList pIL = this->getItems();
+    if (pIL->find(item) == pIL->end())
+        return;
     this->removeItem(item);
     other_inventory->addItem(item);
 }
