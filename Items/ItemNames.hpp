@@ -1,10 +1,9 @@
 #if !defined(ITEM_NAMES_HPP)
 #define ITEM_NAMES_HPP
 
-class ItemNames
+namespace ItemNames
 {
-public:
-    const char* HatDragonLore = "Dragon Lore";
-};
+    const char* HatDragonLore = "Dragon lore";
+}
 
 #endif

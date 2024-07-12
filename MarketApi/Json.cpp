@@ -9,11 +9,15 @@ JsonConverter::~JsonConverter()
 std::string JsonConverter::getJson(pBaseItem item)
 {
     std::stringstream strItemJson;
+    char* name = item->getName();
 
     strItemJson << "{\"itemType\":"
         << item->getType() << ",\"itemId\":" 
-        << item->getItemId() << ",\"itemName\":\""
-        << item->getName() << "\"}";
+        << item->getItemId() << ",\"itemName\":\"";
+    if (name)
+        strItemJson << name << "\"}";
+    else
+        strItemJson << "\"}";
 
     return strItemJson.str();
 }

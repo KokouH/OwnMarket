@@ -5,8 +5,6 @@
 #include <memory>
 #include <iostream>
 
-char* EmptyItemName = "";
-
 class Clothes : public BaseItem
 {
 public:

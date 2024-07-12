@@ -1,10 +1,10 @@
 #include <Clothes.hpp>
 
 Clothes::Clothes()
-    :m_id(1),
-    m_type(0)
+    : m_type(0)
 {
-    m_name = EmptyItemName;
+    m_name = nullptr;
+    m_id = 0;
 }
 
 Clothes::Clothes(short type, char* name)
