@@ -54,4 +54,43 @@ void ServerAPI::on_accept(beast::error_code ec, tcp::socket socket)
     do_accept();
 }
 
+session::session(tcp::socket&& socket)
+    : m_stream(socket)
+{
+}
+
+void session::run()
+{
+    do_read();
+}
+
+void session::do_read()
+{
+    m_req = {};
+
+    m_stream.expires_after(std::chrono::seconds(10));
+    http::async_read(
+        m_stream,
+        m_buffer,
+        m_req,
+        beast::bind_front_handler(
+            &session::on_read,
+            shared_from_this()
+        )
+    );
+}
+
+void session::on_read(beast::error_code ec, std::size_t bt)
+{
+    boost::ignore_unused(bt);
+    if (ec == http::error::end_of_stream)
+        return do_close();
+    if (ec)
+        // TODO 
+        // Создать логгер и записать ошибку
+        return ;
+    
+    
+}
+
 }
