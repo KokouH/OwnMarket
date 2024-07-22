@@ -1,96 +1,12 @@
 #include <Server.hpp>
 
-namespace MarketServer
-{
-
-ServerAPI::ServerAPI()
-    : m_acceptor( net::make_strand(m_ioc) )
-{
-    beast::error_code ec;
-
-    // Open the acceptor
-    m_acceptor.open(m_endpoint.protocol(), ec);
-
-    // Allow address reuse
-    m_acceptor.set_option(net::socket_base::reuse_address(true), ec);
-
-    // Bind to the server address
-    m_acceptor.bind(m_endpoint, ec);
-
-    // Start listening for connections
-    m_acceptor.listen(
-        net::socket_base::max_listen_connections, ec
-    );
-}
-
-void ServerAPI::do_accept()
-{
-    m_acceptor.async_accept(
-        net::make_strand(m_ioc),
-        beast::bind_front_handler(
-            &ServerAPI::on_accept,
-            shared_from_this()
-        )
-    );
-}
-
-void ServerAPI::on_accept(beast::error_code ec, tcp::socket socket)
-{
-    if(ec)
-    {
-        // TODO 
-        // Создать логгер и записать ошибку
-        return ;
-    }
-    else
-    {
-        // Create the session and run it
-        std::make_shared<session>(
-            std::move(socket)
-        )->run();
-    }
-
-    // Accept another connection
-    do_accept();
-}
-
-session::session(tcp::socket&& socket)
-    : m_stream(socket)
+Server::Server()
 {
 }
 
-void session::run()
+void Server::on_accept(pSession session)
 {
-    do_read();
-}
+    std::lock_guard _lock(m_mut_sessions);
 
-void session::do_read()
-{
-    m_req = {};
-
-    m_stream.expires_after(std::chrono::seconds(10));
-    http::async_read(
-        m_stream,
-        m_buffer,
-        m_req,
-        beast::bind_front_handler(
-            &session::on_read,
-            shared_from_this()
-        )
-    );
-}
-
-void session::on_read(beast::error_code ec, std::size_t bt)
-{
-    boost::ignore_unused(bt);
-    if (ec == http::error::end_of_stream)
-        return do_close();
-    if (ec)
-        // TODO 
-        // Создать логгер и записать ошибку
-        return ;
-    
-    
-}
-
+    m_sessions.push(session);
 }

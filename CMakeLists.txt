@@ -1,20 +1,29 @@
 cmake_minimum_required(VERSION 3.29)
 project(Market)
 
+set(CMAKE_CXX_STANDARD 20)
+
 find_package( Boost )
 
 set(CURRENT_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(USE_MARKET_API ON)
 
-add_subdirectory(Inventory)
-add_subdirectory(MarketApi)
-add_subdirectory(Items)
-
-include_directories(Inventory Items MarketApi)
 add_executable(Market main.cpp)
 
-target_include_directories(MarketAPI PUBLIC Inventory)
+add_subdirectory(Inventory)
+add_subdirectory(Items)
+add_subdirectory(Logger)
+if (USE_MARKET_API)
+    include_directories(MarketApi)
+    add_subdirectory(MarketApi)
+    target_include_directories(MarketAPI PUBLIC Inventory PUBLIC Logger)
+    target_link_libraries(Market MarketAPI)
+endif()
+
+include_directories(Inventory Items)
+
 target_include_directories(ItemsPacket PUBLIC Inventory)
 
 target_link_libraries(Market InventoryProject)
-target_link_libraries(Market MarketAPI)
 target_link_libraries(Market ItemsPacket)
+target_link_libraries(Market MarketLogger)
