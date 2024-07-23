@@ -13,13 +13,22 @@ int main()
     pClothes pitem = std::make_shared<Clothes>(
         Clothes(10, (char *)ItemNames::HatDragonLore)
     );
+    pInventory inv = std::make_shared<Inventory>();
     
     logger.putMessage( LogMessage{
         MessageTypes::INFO,
         JsonConverter().getJson(pitem) 
     });
+    inv->addItem(pitem);
+    logger.putMessage( LogMessage{
+        MessageTypes::INFO,
+        JsonConverter().getJson(inv)
+    });
 
     logger.popAllMessages();
+
+    std::cout << "===============" << std::endl;
+
     Server server(logger);
 
     server.start_acceptor();

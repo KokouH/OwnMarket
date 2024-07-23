@@ -2,6 +2,8 @@
 #define JSON_HPP_
 
 #include <Inventory.hpp>
+#include <nlohmann/json.hpp>
+#include <algorithm>
 #include <map>
 #include <string>
 #include <sstream>

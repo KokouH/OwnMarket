@@ -6,25 +6,34 @@ JsonConverter::JsonConverter()
 JsonConverter::~JsonConverter()
 {}
 
-std::string JsonConverter::getJson(pBaseItem item)
+static nlohmann::json _jsonItem(pBaseItem item)
 {
-    std::stringstream strItemJson;
-    char* name = item->getName();
+    nlohmann::json j_item;
 
-    strItemJson << "{\"itemType\":"
-        << item->getType() << ",\"itemId\":" 
-        << item->getItemId() << ",\"itemName\":\"";
-    if (name)
-        strItemJson << name << "\"}";
-    else
-        strItemJson << "\"}";
+    j_item["type"] = item->getType();
+    j_item["itemId"] = item->getItemId();
+    j_item["name"] = item->getName();
 
-    return strItemJson.str();
+    return j_item;
 }
 
-std::string JsonConverter::getJson(pInventory)
+std::string JsonConverter::getJson(pBaseItem item)
 {
-    std::string strItemJson("{}");
+    nlohmann::json j_item = _jsonItem(item);
 
-    return strItemJson;
+    return j_item.dump();
+}
+
+std::string JsonConverter::getJson(pInventory inventory)
+{
+    nlohmann::json j_inventory;
+    pItemsList itemsList = inventory->getItems();
+    
+    int i = 0;
+    std::for_each(itemsList->begin(), itemsList->end(), [&](pBaseItem item)
+    {
+        j_inventory[i++] = _jsonItem(item);
+    });
+
+    return j_inventory.dump();
 }

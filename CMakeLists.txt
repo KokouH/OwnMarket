@@ -21,7 +21,12 @@ if (USE_MARKET_API)
     target_link_libraries(Market MarketAPI)
 endif()
 
-include_directories(Inventory Items)
+set(NLOHMANN_HEADERS "/home/almaz/projects/cppLibs/json/include")
+include_directories(
+    Inventory
+    Items
+    ${NLOHMANN_HEADERS}
+)
 
 target_include_directories(ItemsPacket PUBLIC Inventory)
 

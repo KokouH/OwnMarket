@@ -6,6 +6,7 @@ file(GLOB MarketAPI_src
 )
 include_directories(
     ${CUR_DIR}
+    /home/almaz/projects/cppLibs/json/include
 )
 
 message("MARKET_API")

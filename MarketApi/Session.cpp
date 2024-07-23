@@ -35,16 +35,11 @@ void Session::m_read()
     std::memset(buffer, 0, 2048);
     recv(m_fd, buffer, sizeof(buffer), 0);
     request.append(buffer);
-    // while (readed > 2047)
-    // {
-    //     std::memset(buffer, 0, 2048);
-    //     readed = recv(m_fd, buffer, 2047, 0);
-    //     request.append(buffer);
-    // }
 }
 
 void Session::m_create_response()
 {
+    // TODO Сделать create response
     response.append("Pisun");
 }
 
