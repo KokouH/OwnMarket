@@ -1,5 +1,6 @@
 #include <Inventory.hpp>
 #include <Clothes.hpp>
+#include <Server.hpp>
 #include <Json.hpp>
 #include <algorithm>
 #include <iostream>
@@ -19,6 +20,12 @@ int main()
     });
 
     logger.popAllMessages();
+    Server server(logger);
+
+    server.start_acceptor();
+    server.start_session_handler();
+
+    server.join();
     // std::cout << JsonConverter().getJson(pitem) << std::endl;
 
     return (0);

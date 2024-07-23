@@ -3,7 +3,8 @@ project(Market)
 
 set(CMAKE_CXX_STANDARD 20)
 
-find_package( Boost )
+# find_package( Boost )
+link_libraries( pthread )
 
 set(CURRENT_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(USE_MARKET_API ON)
