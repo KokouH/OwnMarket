@@ -11,7 +11,7 @@ int main()
 {
     ConsoleLogger logger;
     pClothes pitem = std::make_shared<Clothes>(
-        Clothes(10, (char *)ItemNames::HatDragonLore)
+        Clothes((char *)ItemNames::HatDragonLore, 0)
     );
     pInventory inv = std::make_shared<Inventory>();
     
@@ -19,6 +19,7 @@ int main()
         MessageTypes::INFO,
         JsonConverter().getJson(pitem) 
     });
+    inv->addItem(pitem);
     inv->addItem(pitem);
     logger.putMessage( LogMessage{
         MessageTypes::INFO,
@@ -35,7 +36,6 @@ int main()
     server.start_session_handler();
 
     server.join();
-    // std::cout << JsonConverter().getJson(pitem) << std::endl;
 
     return (0);
 }

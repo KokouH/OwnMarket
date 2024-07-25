@@ -19,10 +19,12 @@ public:
     void addItem(pBaseItem);
     void removeItem(pBaseItem);
     void moveItem(pBaseItem, pInventory);
+    unsigned long getId(){return m_id;};
     pItemsList getItems();
 
 private:
     ItemsList m_items;
+    unsigned long m_id;
 
 };
 

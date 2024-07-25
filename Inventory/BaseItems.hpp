@@ -3,6 +3,12 @@
 
 #include <memory>
 
+enum ItemType: int
+{
+    CLOTHES,
+    HATS
+};
+
 class BaseItem
 {
 public:

@@ -8,16 +8,15 @@
 class Clothes : public BaseItem
 {
 public:
-    Clothes();
-
-    Clothes(short type, char* name);
+    Clothes(char*, unsigned long);
 
     short getType() const {return m_type;};
     unsigned long getItemId() const {return m_id;};
     char* getName() const {return m_name;};
 
 private:
-    short m_type;
+    Clothes();
+    short m_type = ItemType::CLOTHES;
     unsigned long m_id;
     char* m_name;
 

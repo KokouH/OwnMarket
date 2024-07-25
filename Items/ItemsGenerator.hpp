@@ -1,0 +1,21 @@
+#if !defined(ITEMS_GENERATOR_HPP)
+#define ITEMS_GENERATOR_HPP
+
+#include <atomic>
+
+class ItemsGenerator
+{
+public:
+    ItemsGenerator();
+    ItemsGenerator(unsigned long);
+    ~ItemsGenerator() = default;
+
+    unsigned long get_current_id();
+    unsigned long get_current_id_non_inc();
+
+private:
+    static std::atomic<unsigned long>m_cur_id;
+
+};
+
+#endif
