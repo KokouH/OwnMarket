@@ -13,6 +13,8 @@ start -> read -> create_answer -> write -> close
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <vector>
+#include <sstream>
 
 class Request
 {

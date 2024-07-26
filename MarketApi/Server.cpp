@@ -6,7 +6,7 @@ Server::Server(BaseLogger &l): m_logger(l)
     sockaddr_in serverAddress; 
     serverAddress.sin_family = AF_INET; 
     serverAddress.sin_port = htons(SERVER_PORT); 
-    serverAddress.sin_addr.s_addr = INADDR_LOOPBACK;
+    serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
     bind(
         m_serverSocket,
         (struct sockaddr*)&serverAddress,

@@ -39,8 +39,8 @@ void Session::m_read()
 
 void Session::m_create_response()
 {
-    // TODO Сделать create response
-    response.append("Pisun");
+
+    response = std::string(request);
 }
 
 void Session::m_send()

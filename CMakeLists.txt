@@ -11,10 +11,10 @@ set(USE_MARKET_API ON)
 
 add_executable(Market main.cpp)
 
+add_subdirectory(Collector)
 add_subdirectory(Inventory)
 add_subdirectory(Items)
 add_subdirectory(Logger)
-add_subdirectory(Collector)
 if (USE_MARKET_API)
     include_directories(MarketApi)
     add_subdirectory(MarketApi)

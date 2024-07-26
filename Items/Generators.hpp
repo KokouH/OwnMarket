@@ -14,7 +14,7 @@ public:
     unsigned long get_current_id_non_inc();
 
 private:
-    static std::atomic<unsigned long>m_cur_id;
+    std::atomic<unsigned long> m_cur_id;
 
 };
 
@@ -29,7 +29,7 @@ public:
     unsigned long get_current_id_non_inc();
 
 private:
-    static std::atomic<unsigned long>m_cur_id;
+    std::atomic<unsigned long> m_cur_id;
 
 };
 

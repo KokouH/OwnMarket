@@ -7,4 +7,7 @@ file(GLOB Items_src
 include_directories(
     ${CUR_DIR}
 )
+
+message("Items_src")
+message(${Items_src})
 add_library(ItemsPacket ${Items_src})
