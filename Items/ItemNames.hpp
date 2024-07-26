@@ -3,7 +3,7 @@
 
 namespace ItemNames
 {
-    const char* HatDragonLore = "Dragon lore";
+    static const char* HatDragonLore = "Dragon lore";
 }
 
 #endif

@@ -14,6 +14,7 @@ add_executable(Market main.cpp)
 add_subdirectory(Inventory)
 add_subdirectory(Items)
 add_subdirectory(Logger)
+add_subdirectory(Collector)
 if (USE_MARKET_API)
     include_directories(MarketApi)
     add_subdirectory(MarketApi)
@@ -25,11 +26,15 @@ set(NLOHMANN_HEADERS "/home/almaz/projects/cppLibs/json/include")
 include_directories(
     Inventory
     Items
+    Collector
     ${NLOHMANN_HEADERS}
 )
 
 target_include_directories(ItemsPacket PUBLIC Inventory)
+target_include_directories(Collector PUBLIC Inventory)
+target_include_directories(Collector PUBLIC Items)
 
+target_link_libraries(Market Collector)
 target_link_libraries(Market InventoryProject)
 target_link_libraries(Market ItemsPacket)
 target_link_libraries(Market MarketLogger)

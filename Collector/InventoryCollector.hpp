@@ -2,7 +2,7 @@
 #define INVENTORY_COLLECTOR_HPP
 
 #include <Inventory.hpp>
-#include <ItemsGenerator.hpp>
+#include <Generators.hpp>
 #include <Clothes.hpp>
 #include <ItemNames.hpp>
 #include <vector>
@@ -18,11 +18,15 @@ InventoryCollector
 class InventoryCollector
 {
 public:
-    InventoryCollector(ItemsGenerator&);
+    InventoryCollector(ItemsGenerator&, InventoryGenerator&);
     ~InventoryCollector() = default;
 
-    void addItem(short);
+    unsigned long createInventory();
+    unsigned long createItem(short); // return new item id
     void removeItem(unsigned long);
+
+    pBaseItem getItemById(unsigned long);
+    pInventory getInventoryById(unsigned long);
 
 private:
     InventoryCollector();
@@ -30,6 +34,7 @@ private:
     std::unordered_map<unsigned long, pBaseItem> m_items;
 
     ItemsGenerator &m_item_generator;
+    InventoryGenerator &m_inventory_generator;
 
 };
 

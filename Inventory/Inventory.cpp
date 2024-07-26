@@ -1,6 +1,11 @@
 #include <Inventory.hpp>
 
 Inventory::Inventory()
+    : m_id(0)
+{}
+
+Inventory::Inventory(unsigned long id)
+    : m_id(id)
 {}
 
 Inventory::~Inventory()

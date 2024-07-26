@@ -36,6 +36,12 @@ void Server::start_acceptor()
     m_acceptor_working = true;
     std::thread accept_thread(&Server::m_acceptor, this);
     std::swap(accept_thread, m_threads[0]);
+    m_logger.putMessage(
+        LogMessage{
+            MessageTypes::INFO,
+            "Acceptor started."
+        }
+    );
 }
 
 void Server::start_session_handler()
@@ -43,6 +49,12 @@ void Server::start_session_handler()
     m_session_handle = true;
     std::thread session_handler_thread(&Server::m_session_handler, this);
     std::swap(session_handler_thread, m_threads[1]);
+    m_logger.putMessage(
+        LogMessage{
+            MessageTypes::INFO,
+            "Session handler started."
+        }
+    );
 }
 
 void Server::m_on_accept(pSession session)

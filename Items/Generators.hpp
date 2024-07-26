@@ -18,4 +18,19 @@ private:
 
 };
 
+class InventoryGenerator
+{
+public:
+    InventoryGenerator();
+    InventoryGenerator(unsigned long);
+    ~InventoryGenerator() = default;
+
+    unsigned long get_current_id();
+    unsigned long get_current_id_non_inc();
+
+private:
+    static std::atomic<unsigned long>m_cur_id;
+
+};
+
 #endif

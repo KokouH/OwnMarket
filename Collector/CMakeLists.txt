@@ -8,6 +8,6 @@ include_directories(
     ${CUR_DIR}
 )
 
-message("MARKET_API")
+message("Collector")
 message(${Collector_src})
 add_library(Collector ${Collector_src})

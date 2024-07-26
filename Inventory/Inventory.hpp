@@ -13,7 +13,7 @@ using pItemsList = std::shared_ptr<ItemsList>;
 class Inventory
 {
 public:
-    Inventory();
+    Inventory(unsigned long);
     ~Inventory();
     
     void addItem(pBaseItem);
@@ -23,6 +23,7 @@ public:
     pItemsList getItems();
 
 private:
+    Inventory();
     ItemsList m_items;
     unsigned long m_id;
 

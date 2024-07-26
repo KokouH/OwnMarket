@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <mutex>
 
 enum MessageTypes : int
 {
@@ -23,6 +24,7 @@ using tLogMessage = struct LogMessage;
 class BaseLogger
 {
 protected:
+    std::mutex m_mut;
     std::vector<tLogMessage> m_logs;
 
 public:

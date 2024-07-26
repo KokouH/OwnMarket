@@ -19,6 +19,9 @@ static nlohmann::json _jsonItem(pBaseItem item)
 
 std::string JsonConverter::getJson(pBaseItem item)
 {
+    if (item.get() == nullptr)
+        return std::string();
+
     nlohmann::json j_item = _jsonItem(item);
 
     return j_item.dump();
