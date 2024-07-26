@@ -39,7 +39,7 @@ void Session::m_read()
 
 void Session::m_create_response()
 {
-
+    
     response = std::string(request);
 }
 
