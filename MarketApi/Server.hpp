@@ -3,6 +3,7 @@
 
 #include <Session.hpp>
 #include <Logger.hpp>
+#include <InventoryCollector.hpp>
 #include <chrono>
 #include <queue>
 #include <thread>
@@ -21,7 +22,7 @@ class Server
 {
 public:
     // Server();
-    Server(BaseLogger&);
+    Server(BaseLogger&, InventoryCollector&);
     ~Server();
 
     void join();
@@ -36,6 +37,7 @@ private:
     int m_serverSocket;
     bool m_logger_inited;
     BaseLogger &m_logger;
+    InventoryCollector &m_collector;
     std::thread m_threads[2];
     std::mutex m_mut_sessions;
     std::queue<pSession> m_sessions;

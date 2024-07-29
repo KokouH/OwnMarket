@@ -1,6 +1,8 @@
 #include <Server.hpp>
 
-Server::Server(BaseLogger &l): m_logger(l)
+Server::Server(BaseLogger &l, InventoryCollector& coll)
+    : m_logger(l),
+    m_collector(coll)
 {
     m_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     sockaddr_in serverAddress; 
@@ -75,7 +77,7 @@ void Server::m_acceptor()
             std::lock_guard _lock(m_mut_sessions);
             m_sessions.push( std::move(cur_session) );
         }
-        // std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 }
 

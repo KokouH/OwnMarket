@@ -18,7 +18,13 @@ add_subdirectory(Logger)
 if (USE_MARKET_API)
     include_directories(MarketApi)
     add_subdirectory(MarketApi)
-    target_include_directories(MarketAPI PUBLIC Inventory PUBLIC Logger)
+    target_include_directories(MarketAPI 
+        PUBLIC Inventory
+        PUBLIC Logger
+        PUBLIC Collector
+        PUBLIC Items
+        
+    )
     target_link_libraries(Market MarketAPI)
 endif()
 

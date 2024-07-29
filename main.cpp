@@ -9,10 +9,10 @@ int main()
 {
     JsonConverter converter;
     ConsoleLogger logger;
-    Server server(logger);
     InventoryGenerator inv_gen;
     ItemsGenerator item_gen;
     InventoryCollector collector(item_gen, inv_gen);
+    Server server(logger, collector);
     
     unsigned long inv;
     unsigned long item;
