@@ -16,13 +16,18 @@ int main()
     
     unsigned long inv;
     unsigned long item;
+    pInventory invent;
 
     inv = collector.createInventory();
-    item = collector.createItem(ItemType::CLOTHES);
+    invent = collector.getInventoryById(inv);
+    for (int i = 0; i < 10; i++)
+    {
+        item = collector.createItem(ItemType::CLOTHES);
 
-    collector.getInventoryById(inv)->addItem(
-        collector.getItemById(item)
-    );
+        invent->addItem(
+            collector.getItemById(item)
+        );
+    }
 
     logger.putMessage(
         LogMessage{

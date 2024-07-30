@@ -4,6 +4,7 @@
 #include <Session.hpp>
 #include <Logger.hpp>
 #include <InventoryCollector.hpp>
+#include <EndPoint.hpp>
 #include <Json.hpp>
 #include <chrono>
 #include <queue>
@@ -16,6 +17,7 @@
 #include <unistd.h>
 
 #define SERVER_PORT 8484
+#define THREAD_HANDLE_COUNT 2
 
 using pSession = std::shared_ptr<Session>;
 
@@ -29,7 +31,7 @@ public:
     void join();
     void start_session_handler();
     void start_acceptor();
-
+    void add_end_point(std::string uri, void (*f)(std::string&, std::string&));
     // bool joinable();
 
 private:
@@ -40,7 +42,8 @@ private:
     BaseLogger &m_logger;
     InventoryCollector &m_collector;
     JsonConverter m_converter;
-    std::thread m_threads[2];
+    std::vector<EndPoint> m_endPoints;
+    std::thread m_threads[1 + THREAD_HANDLE_COUNT];
     std::mutex m_mut_sessions;
     std::queue<pSession> m_sessions;
 

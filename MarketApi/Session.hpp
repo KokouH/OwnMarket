@@ -17,46 +17,39 @@ start -> read -> create_answer -> write -> close
 #include <sstream>
 #include <InventoryCollector.hpp>
 #include <Json.hpp>
+#include <EndPoint.hpp>
+#include <httpparser/request.h>
+#include <httpparser/httprequestparser.h>
 #include <unordered_map>
-
-enum RequestType: int
-{
-    POST,
-    GET
-};
-
-class Request
-{
-public:
-    Request() = default;
-    ~Request() = default;
-
-private:
-    std::string m_url;
-    RequestType m_type;
-    std::unordered_map<std::string, std::string> m_headers;
-    std::string m_content;
-
-};
 
 class Session
 {
 public:
     Session(int);
     ~Session();
-    void handle(InventoryCollector&, JsonConverter&);
+    
+    void handle(
+        InventoryCollector&,
+        JsonConverter&,
+        std::vector<EndPoint>&
+    );
 
 private:
     int m_fd;
     std::string request;
     std::string response;
-    Request m_req;
+    httpparser::HttpRequestParser parser;
+    httpparser::Request m_req;
 
     bool m_bad_session;
 
     void m_read();
     // void m_parse();
-    void m_create_response(InventoryCollector&, JsonConverter&);
+    void m_create_response(
+        InventoryCollector&,
+        JsonConverter&,
+        std::vector<EndPoint>&
+    );
     void m_send();
     bool m_request_parse();
 };

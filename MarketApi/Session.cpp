@@ -14,12 +14,16 @@ Session::~Session()
         close(m_fd);
 }
 
-void Session::handle(InventoryCollector& collector, JsonConverter& convertor)
+void Session::handle(
+    InventoryCollector& collector,
+    JsonConverter& convertor,
+    std::vector<EndPoint>& m_endPoints
+)
 {
     m_read();
     if (!m_request_parse())
         return ;
-    m_create_response(collector, convertor);
+    m_create_response(collector, convertor, m_endPoints);
     m_send();
 }
 
@@ -39,7 +43,11 @@ void Session::m_read()
     request.append(buffer);
 }
 
-void Session::m_create_response(InventoryCollector& collector, JsonConverter& convertor)
+void Session::m_create_response(
+    InventoryCollector& collector,
+    JsonConverter& convertor,
+    std::vector<EndPoint>& m_endPoints
+)
 {
     std::stringstream ss;
     pInventory inv = collector.getInventoryById(0);
@@ -77,10 +85,15 @@ static inline void split(std::string str, std::string splitBy, std::vector<std::
 
 bool Session::m_request_parse()
 {
-    std::vector<std::string> splt_req;
+    char* c_requests = (char *)request.c_str();
 
-    split(request, "\r\n", splt_req);
+    httpparser::HttpRequestParser::ParseResult res = parser.parse(
+        m_req,
+        c_requests,
+        c_requests + request.size()
+    );
 
-
+    if (res != httpparser::HttpRequestParser::ParsingCompleted)
+        return false;
     return true;
 }

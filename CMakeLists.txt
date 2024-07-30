@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.29)
 project(Market)
 
 set(CMAKE_CXX_STANDARD 20)
+set(HTTP_PARSER_HEADER "/home/almaz/projects/cppLibs/httpparser-master/src")
+set(NLOHMANN_HEADERS "/home/almaz/projects/cppLibs/json/include")
 
 # find_package( Boost )
 link_libraries( pthread )
@@ -23,12 +25,12 @@ if (USE_MARKET_API)
         PUBLIC Logger
         PUBLIC Collector
         PUBLIC Items
+        PUBLIC ${HTTP_PARSER_HEADER}
         
     )
     target_link_libraries(Market MarketAPI)
 endif()
 
-set(NLOHMANN_HEADERS "/home/almaz/projects/cppLibs/json/include")
 include_directories(
     Inventory
     Items

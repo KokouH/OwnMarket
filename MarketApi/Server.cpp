@@ -18,7 +18,7 @@ Server::Server(BaseLogger &l, InventoryCollector& coll)
         (struct sockaddr*)&serverAddress,
         sizeof(serverAddress)
     );
-    if (listen(m_serverSocket, 1000) < 0 && m_logger_inited)
+    if (listen(m_serverSocket, 10000) < 0 && m_logger_inited)
     {
         m_logger.putMessage(
             tLogMessage{
@@ -53,8 +53,10 @@ void Server::start_acceptor()
 void Server::start_session_handler()
 {
     m_session_handle = true;
-    std::thread session_handler_thread(&Server::m_session_handler, this);
-    std::swap(session_handler_thread, m_threads[1]);
+    for (int i = 0; i < THREAD_HANDLE_COUNT; i++)
+    {
+        m_threads[i + 1] = std::thread(&Server::m_session_handler, this);
+    }
     m_logger.putMessage(
         LogMessage{
             MessageTypes::INFO,
@@ -81,7 +83,7 @@ void Server::m_acceptor()
             std::lock_guard _lock(m_mut_sessions);
             m_sessions.push( std::move(cur_session) );
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 }
 
@@ -93,7 +95,7 @@ void Server::m_session_handler()
     {
         if (m_sessions.empty())
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
             continue;
         }
 
@@ -101,21 +103,33 @@ void Server::m_session_handler()
         {
             {
             std::lock_guard _lock(m_mut_sessions);
+            if (m_sessions.empty())
+                break;
             cur_session = std::move(m_sessions.front());
-            }
             m_sessions.pop();
+            }
             if (cur_session.get() == nullptr)
                 break;
-            cur_session->handle(m_collector, m_converter);
+            cur_session->handle(m_collector, m_converter, m_endPoints);
             cur_session.reset();
 
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }   
+}
+
+void Server::add_end_point(std::string uri, void (*f)(std::string&, std::string&))
+{
+    EndPoint endPoint(uri, f);
+
+    m_endPoints.push_back(endPoint);
 }
 
 void Server::join()
 {
     m_threads[0].join();
-    m_threads[1].join();
+    for (int i = 0; i < THREAD_HANDLE_COUNT; i++)
+    {
+        m_threads[i + 1].join();
+    }
 }
