@@ -14,10 +14,12 @@ Session::~Session()
         close(m_fd);
 }
 
-void Session::handle()
+void Session::handle(InventoryCollector& collector, JsonConverter& convertor)
 {
     m_read();
-    m_create_response();
+    if (!m_request_parse())
+        return ;
+    m_create_response(collector, convertor);
     m_send();
 }
 
@@ -37,13 +39,48 @@ void Session::m_read()
     request.append(buffer);
 }
 
-void Session::m_create_response()
+void Session::m_create_response(InventoryCollector& collector, JsonConverter& convertor)
 {
-    
-    response = std::string(request);
+    std::stringstream ss;
+    pInventory inv = collector.getInventoryById(0);
+    std::string temp = convertor.getJson(inv);
+
+    // TODO
+    // Заглушка статуса ответа, отсутсвие заголовков в ответе
+    ss << "HTTP/1.0 200 OK\r\nContent-Length: ";
+    ss << temp.size() << "\r\n\r\n";
+    ss << temp;
+
+    response = ss.str();
 }
 
 void Session::m_send()
 {
     send(m_fd, response.c_str(), response.size(), 0);
+}
+
+static inline void split(std::string str, std::string splitBy, std::vector<std::string>& tokens)
+{
+    size_t splitAt;
+    size_t splitLen = splitBy.size();
+    std::string frag;
+    while(true)
+    {
+        frag = tokens.back();
+        splitAt = frag.find(splitBy);
+        if(splitAt == std::string::npos)
+            break;
+        tokens.back() = frag.substr(0, splitAt);
+        tokens.push_back(frag.substr(splitAt+splitLen, frag.size()-(splitAt+splitLen)));
+    }
+}
+
+bool Session::m_request_parse()
+{
+    std::vector<std::string> splt_req;
+
+    split(request, "\r\n", splt_req);
+
+
+    return true;
 }

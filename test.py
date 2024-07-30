@@ -1,13 +1,21 @@
 import socket
 import time
 import random
+import requests
 
 s = []
 
-# while (1):
 n = 1000
 # n = random.randint(10, 30)
 print(n)
+
+# HTTP test
+# for _ in range(n):
+#     r = requests.get('http://localhost:8484')
+#     print(r.text)
+
+# Socket test
+
 for _ in range(n):
     s.append( socket.socket(socket.AF_INET, socket.SOCK_STREAM) )
 

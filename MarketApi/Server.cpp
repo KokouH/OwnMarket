@@ -4,10 +4,14 @@ Server::Server(BaseLogger &l, InventoryCollector& coll)
     : m_logger(l),
     m_collector(coll)
 {
+    const int opt = 1;
+
     m_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-    sockaddr_in serverAddress; 
-    serverAddress.sin_family = AF_INET; 
-    serverAddress.sin_port = htons(SERVER_PORT); 
+    setsockopt(m_serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    setsockopt(m_serverSocket, SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt));
+    sockaddr_in serverAddress;
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_port = htons(SERVER_PORT);
     serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
     bind(
         m_serverSocket,
@@ -102,7 +106,7 @@ void Server::m_session_handler()
             m_sessions.pop();
             if (cur_session.get() == nullptr)
                 break;
-            cur_session->handle();
+            cur_session->handle(m_collector, m_converter);
             cur_session.reset();
 
         }
