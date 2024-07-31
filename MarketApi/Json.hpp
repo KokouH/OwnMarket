@@ -29,6 +29,8 @@ public:
     */
     std::string getJson(pBaseItem);
     std::string getJson(pInventory);
+    #define getObj nlohmann::json::parse
+    // nlohmann::json getObj(std::string) = nlohmann::json::parse;
 
 private:
     // std::map<>

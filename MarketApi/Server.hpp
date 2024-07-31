@@ -19,6 +19,8 @@
 #define SERVER_PORT 8484
 #define THREAD_HANDLE_COUNT 2
 
+// Server -> Session -> Endpoint
+
 using pSession = std::shared_ptr<Session>;
 
 class Server
@@ -31,7 +33,7 @@ public:
     void join();
     void start_session_handler();
     void start_acceptor();
-    void add_end_point(std::string uri, void (*f)(std::string&, std::string&));
+    void add_end_point(std::string uri, void (*f)(std::string&, EndPointArgs&, std::string&));
     // bool joinable();
 
 private:

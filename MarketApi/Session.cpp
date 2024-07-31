@@ -21,9 +21,14 @@ void Session::handle(
 )
 {
     m_read();
-    if (!m_request_parse())
-        return ;
-    m_create_response(collector, convertor, m_endPoints);
+    if (m_request_parse()) // Check success parsing http request
+    {
+        m_create_response(collector, convertor, m_endPoints);
+    }
+    else
+    {
+        response = std::string("HTTP/1.0 499 FAIL\r\n\r\n");
+    }
     m_send();
 }
 
@@ -56,31 +61,30 @@ void Session::m_create_response(
     // TODO
     // Заглушка статуса ответа, отсутсвие заголовков в ответе
     ss << "HTTP/1.0 200 OK\r\nContent-Length: ";
-    ss << temp.size() << "\r\n\r\n";
-    ss << temp;
-
+    ss << m_req.uri.size() << "\r\n\r\n";
+    ss << m_req.uri;
     response = ss.str();
+
+    EndPointArgs argsEndPoint = {collector, convertor};
+
+    for (auto endPoint: m_endPoints)
+    {
+        if (endPoint == m_req.uri)
+        {
+            std::string cont_text = std::string(m_req.content.begin(), m_req.content.end());
+            endPoint(
+                cont_text,
+                argsEndPoint,
+                response
+            );
+        }
+    }
+
 }
 
 void Session::m_send()
 {
     send(m_fd, response.c_str(), response.size(), 0);
-}
-
-static inline void split(std::string str, std::string splitBy, std::vector<std::string>& tokens)
-{
-    size_t splitAt;
-    size_t splitLen = splitBy.size();
-    std::string frag;
-    while(true)
-    {
-        frag = tokens.back();
-        splitAt = frag.find(splitBy);
-        if(splitAt == std::string::npos)
-            break;
-        tokens.back() = frag.substr(0, splitAt);
-        tokens.push_back(frag.substr(splitAt+splitLen, frag.size()-(splitAt+splitLen)));
-    }
 }
 
 bool Session::m_request_parse()

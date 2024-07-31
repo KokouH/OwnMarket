@@ -118,7 +118,7 @@ void Server::m_session_handler()
     }   
 }
 
-void Server::add_end_point(std::string uri, void (*f)(std::string&, std::string&))
+void Server::add_end_point(std::string uri, void (*f)(std::string&, EndPointArgs&, std::string&))
 {
     EndPoint endPoint(uri, f);
 
