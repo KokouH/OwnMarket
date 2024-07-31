@@ -21,14 +21,8 @@ void Session::handle(
 )
 {
     m_read();
-    if (m_request_parse()) // Check success parsing http request
-    {
-        m_create_response(collector, convertor, m_endPoints);
-    }
-    else
-    {
-        response = std::string("HTTP/1.0 499 FAIL\r\n\r\n");
-    }
+    m_request_parse();
+    m_create_response(collector, convertor, m_endPoints);
     m_send();
 }
 
@@ -65,20 +59,20 @@ void Session::m_create_response(
     ss << m_req.uri;
     response = ss.str();
 
-    EndPointArgs argsEndPoint = {collector, convertor};
+    // EndPointArgs argsEndPoint = {collector, convertor};
 
-    for (auto endPoint: m_endPoints)
-    {
-        if (endPoint == m_req.uri)
-        {
-            std::string cont_text = std::string(m_req.content.begin(), m_req.content.end());
-            endPoint(
-                cont_text,
-                argsEndPoint,
-                response
-            );
-        }
-    }
+    // for (auto endPoint: m_endPoints)
+    // {
+    //     if (endPoint == m_req.uri)
+    //     {
+    //         std::string cont_text = std::string(m_req.content.begin(), m_req.content.end());
+    //         endPoint(
+    //             cont_text,
+    //             argsEndPoint,
+    //             response
+    //         );
+    //     }
+    // }
 
 }
 

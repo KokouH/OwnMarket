@@ -38,4 +38,6 @@ private:
 
 };
 
+using pInventoryCollector = std::shared_ptr<InventoryCollector>;
+
 #endif

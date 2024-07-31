@@ -6,8 +6,8 @@ import threading
 
 s = []
 
-k = 20
-n = 1000
+k = 2
+n = 10
 # n = random.randint(10, 30)
 results = [0 for i in range(k)]
 print(k, n)
@@ -20,6 +20,7 @@ def t(results, i):
     for _ in range(n):
         try:
             r = requests.get('http://localhost:8484')
+            print(r.text)
             c += 1
         except:
             pass
