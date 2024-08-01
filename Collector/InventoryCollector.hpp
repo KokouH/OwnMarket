@@ -4,6 +4,7 @@
 #include <Inventory.hpp>
 #include <Generators.hpp>
 #include <Clothes.hpp>
+#include <Hats.hpp>
 #include <ItemNames.hpp>
 #include <vector>
 #include <unordered_map>

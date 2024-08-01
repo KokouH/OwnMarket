@@ -20,9 +20,17 @@ int main()
     
     inv = collector.createInventory();
     invent = collector.getInventoryById(inv);
+    ItemType it = ItemType::CLOTHES;
     for (int i = 0; i < 100000; i++)
     {
-        item = collector.createItem(ItemType::CLOTHES);
+        if (it == ItemType::HATS)
+        {
+            item = collector.createItem(ItemType::HATS);
+            it = ItemType::CLOTHES;
+        } else {
+            item = collector.createItem(ItemType::CLOTHES);
+            it = ItemType::HATS;
+        }
 
         invent->addItem(
             collector.getItemById(item)

@@ -128,8 +128,8 @@ void Server::add_end_point(std::string uri, void (*f)(std::string&, EndPointArgs
 void Server::join()
 {
     m_threads[0].join();
-    for (int i = 0; i < THREAD_HANDLE_COUNT; i++)
+    for (int i = 1; i <= THREAD_HANDLE_COUNT; i++)
     {
-        m_threads[i + 1].join();
+        m_threads[i].join();
     }
 }

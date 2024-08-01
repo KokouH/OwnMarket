@@ -3,7 +3,8 @@
 
 namespace ItemNames
 {
-    static const char* HatDragonLore = "Dragon lore";
+    static const char* ClothesDragonLore = "Clothes Dragon lore";
+    static const char* HatDragonLore = "Hat Dragon lore";
 }
 
 #endif

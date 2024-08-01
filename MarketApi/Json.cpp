@@ -6,7 +6,7 @@ JsonConverter::JsonConverter()
 JsonConverter::~JsonConverter()
 {}
 
-static nlohmann::json _jsonItem(pBaseItem item)
+static inline nlohmann::json _jsonItem(pBaseItem item)
 {
     nlohmann::json j_item;
 
@@ -32,10 +32,9 @@ std::string JsonConverter::getJson(pInventory inventory)
     nlohmann::json j_inventory;
     pItemsList itemsList = inventory->getItems();
     
-    int i = 0;
     std::for_each(itemsList->begin(), itemsList->end(), [&](pBaseItem item)
     {
-        j_inventory[i++] = _jsonItem(item);
+        j_inventory.push_back( _jsonItem(item) );
     });
 
     return j_inventory.dump();

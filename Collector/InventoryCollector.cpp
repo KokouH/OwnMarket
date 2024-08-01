@@ -26,6 +26,11 @@ unsigned long InventoryCollector::createItem(short type)
     id = m_item_generator.get_current_id();
     if (type == ItemType::CLOTHES)
         pItem = std::make_shared<Clothes>(Clothes(
+            (char *)ItemNames::ClothesDragonLore, id
+        ));
+
+    if (type == ItemType::HATS)
+        pItem = std::make_shared<Hats>(Hats(
             (char *)ItemNames::HatDragonLore, id
         ));
 

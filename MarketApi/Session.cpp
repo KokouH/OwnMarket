@@ -59,20 +59,20 @@ void Session::m_create_response(
     ss << m_req.uri;
     response = ss.str();
 
-    EndPointArgs argsEndPoint = {collector, convertor};
+    // EndPointArgs argsEndPoint = {collector, convertor};
 
-    for (auto endPoint: m_endPoints)
-    {
-        if (endPoint == m_req.uri)
-        {
-            std::string cont_text = std::string(m_req.content.begin(), m_req.content.end());
-            endPoint(
-                cont_text,
-                argsEndPoint,
-                response
-            );
-        }
-    }
+    // for (auto endPoint: m_endPoints)
+    // {
+    //     if (endPoint == m_req.uri)
+    //     {
+    //         std::string cont_text = std::string(m_req.content.begin(), m_req.content.end());
+    //         endPoint(
+    //             cont_text,
+    //             argsEndPoint,
+    //             response
+    //         );
+    //     }
+    // }
 
 }
 
