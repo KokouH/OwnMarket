@@ -4,6 +4,21 @@
 #include <algorithm>
 #include <iostream>
 #include <Logger.hpp>
+#include <URI.hpp>
+
+void EP_api_get_inventory(std::string& uri, EndPointArgs& args, std::string& response)
+{
+    std::stringstream ss;
+
+    ss << OK_HTTP_STRING;
+    ss << "\r\n";
+
+    ss << args.m_converter.getJson(
+        args.m_collector.getInventoryById(0)
+    );
+
+    response = ss.str();
+}
 
 int main()
 {
@@ -13,6 +28,8 @@ int main()
     ItemsGenerator item_gen;
     InventoryCollector collector(item_gen, inv_gen);
     Server server(logger, collector);
+
+    server.add_end_point("/api/get_inventory", &EP_api_get_inventory);
     
     unsigned long inv;
     unsigned long item;
@@ -21,7 +38,7 @@ int main()
     inv = collector.createInventory();
     invent = collector.getInventoryById(inv);
     ItemType it = ItemType::CLOTHES;
-    for (int i = 0; i < 100000; i++)
+    for (int i = 0; i < 1000; i++)
     {
         if (it == ItemType::HATS)
         {

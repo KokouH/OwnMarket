@@ -17,12 +17,20 @@ Session::~Session()
 void Session::handle(
     InventoryCollector& collector,
     JsonConverter& convertor,
+    BaseLogger& logger,
     std::vector<EndPoint>& m_endPoints
 )
 {
     m_read();
-    m_request_parse();
-    m_create_response(collector, convertor, m_endPoints);
+
+    if (m_request_parse())
+    {
+        m_create_response(collector, convertor, logger, m_endPoints);
+    }
+    else
+    {
+        std::cout << "UI";
+    }
     m_send();
 }
 
@@ -45,12 +53,11 @@ void Session::m_read()
 void Session::m_create_response(
     InventoryCollector& collector,
     JsonConverter& convertor,
-    std::vector<EndPoint>& m_endPoints
+    BaseLogger& logger,
+    std::vector<EndPoint>& endPoints
 )
 {
     std::stringstream ss;
-    pInventory inv = collector.getInventoryById(0);
-    std::string temp = convertor.getJson(inv);
 
     // TODO
     // Заглушка статуса ответа, отсутсвие заголовков в ответе
@@ -59,21 +66,20 @@ void Session::m_create_response(
     ss << m_req.uri;
     response = ss.str();
 
-    // EndPointArgs argsEndPoint = {collector, convertor};
+    EndPointArgs argsEndPoint = {collector, convertor, logger};
 
-    // for (auto endPoint: m_endPoints)
-    // {
-    //     if (endPoint == m_req.uri)
-    //     {
-    //         std::string cont_text = std::string(m_req.content.begin(), m_req.content.end());
-    //         endPoint(
-    //             cont_text,
-    //             argsEndPoint,
-    //             response
-    //         );
-    //     }
-    // }
-
+    for (auto endPoint: endPoints)
+    {
+        if (endPoint == m_req.uri)
+        {
+            std::string cont_text = std::string(m_req.content.begin(), m_req.content.end());
+            endPoint(
+                cont_text,
+                argsEndPoint,
+                response
+            );
+        }
+    }
 }
 
 void Session::m_send()

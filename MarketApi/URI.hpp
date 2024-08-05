@@ -2,12 +2,13 @@
 #include <vector>
 #include <algorithm>
 
+#define OK_HTTP_STRING "HTTP/1.0 200 OK\r\n"
+
 struct param
 {
     std::string key;
     std::string value;
 };
-
 
 class URI
 {
@@ -24,7 +25,7 @@ public:
 
         iterator_t uriEnd = uri.end();
         iterator_t queryStart = std::find(uri.begin(), uriEnd, L'?');
-
+        queryStart++;
         
     }
 };

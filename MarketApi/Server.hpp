@@ -17,7 +17,7 @@
 #include <unistd.h>
 
 #define SERVER_PORT 8484
-#define THREAD_HANDLE_COUNT 10
+#define THREAD_HANDLE_COUNT 1
 
 // Server -> Session -> Endpoint
 

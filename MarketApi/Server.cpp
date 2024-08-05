@@ -110,7 +110,7 @@ void Server::m_session_handler()
             }
             if (cur_session.get() == nullptr)
                 break;
-            cur_session->handle(m_collector, m_converter, m_endPoints);
+            cur_session->handle(m_collector, m_converter, m_logger, m_endPoints);
             cur_session.reset();
 
         }

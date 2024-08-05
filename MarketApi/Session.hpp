@@ -32,6 +32,7 @@ public:
     void handle(
         InventoryCollector&,
         JsonConverter&,
+        BaseLogger&,
         std::vector<EndPoint>&
     );
 
@@ -49,6 +50,7 @@ private:
     void m_create_response(
         InventoryCollector&,
         JsonConverter&,
+        BaseLogger&,
         std::vector<EndPoint>&
     );
     void m_send();
