@@ -8,14 +8,27 @@
 
 void EP_api_get_inventory(std::string& uri, EndPointArgs& args, std::string& response)
 {
+    URI _uri;
     std::stringstream ss;
+    unsigned long id = -1;
 
     ss << OK_HTTP_STRING;
     ss << "\r\n";
 
-    ss << args.m_converter.getJson(
-        args.m_collector.getInventoryById(0)
-    );
+    _uri.Parse(uri);
+    if (_uri.params.find("id") != _uri.params.end())
+    {
+        try
+        {
+            id = std::stoul(_uri.params["id"]);
+            ss << args.m_converter.getJson(args.m_collector.getInventoryById(id));
+        }
+        catch(const std::exception& e)
+        {
+            ss << _uri.params["id"];
+            return;
+        }
+    }
 
     response = ss.str();
 }
@@ -35,31 +48,28 @@ int main()
     unsigned long item;
     pInventory invent;
     
-    inv = collector.createInventory();
-    invent = collector.getInventoryById(inv);
-    ItemType it = ItemType::CLOTHES;
-    for (int i = 0; i < 1000; i++)
+    for (int iq; iq < 100; iq++)
     {
-        if (it == ItemType::HATS)
+        inv = collector.createInventory();
+        invent = collector.getInventoryById(inv);
+        ItemType it = ItemType::CLOTHES;
+        for (int i = 0; i < 10000; i++)
         {
-            item = collector.createItem(ItemType::HATS);
-            it = ItemType::CLOTHES;
-        } else {
-            item = collector.createItem(ItemType::CLOTHES);
-            it = ItemType::HATS;
-        }
+            if (it == ItemType::HATS)
+            {
+                item = collector.createItem(ItemType::HATS);
+                it = ItemType::CLOTHES;
+            } else {
+                item = collector.createItem(ItemType::CLOTHES);
+                it = ItemType::HATS;
+            }
 
-        invent->addItem(
-            collector.getItemById(item)
-        );
+            invent->addItem(
+                collector.getItemById(item)
+            );
+        }
     }
 
-    logger.putMessage(
-        LogMessage{
-            MessageTypes::INFO,
-            converter.getJson(collector.getInventoryById(inv))
-        }
-    );
     logger.putMessage(
         LogMessage{
             MessageTypes::INFO,

@@ -9,7 +9,7 @@ s = []
 
 proc_count = 20
 threads_count = 2
-req_count = 250
+req_count = 25
 
 print("Start", proc_count * threads_count * req_count)
 
@@ -20,7 +20,7 @@ def th_func():
     c = 0
     for _ in range(req_count):
         try:
-            r = requests.get('http://localhost:8484')
+            r = requests.get(f'http://localhost:8484/api/get_inventory?id=0')
             # print(r.text)
             c += 1
         except:

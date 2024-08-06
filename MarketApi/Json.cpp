@@ -29,6 +29,9 @@ std::string JsonConverter::getJson(pBaseItem item)
 
 std::string JsonConverter::getJson(pInventory inventory)
 {
+    if (!inventory)
+        return std::string("Error: Inventory not found");
+
     nlohmann::json j_inventory;
     pItemsList itemsList = inventory->getItems();
     

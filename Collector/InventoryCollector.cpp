@@ -49,10 +49,14 @@ void InventoryCollector::removeItem(unsigned long id)
 
 pBaseItem InventoryCollector::getItemById(unsigned long id)
 {
-    return m_items[id];
+    if (m_items.find(id) != m_items.end())
+        return m_items[id];
+    return nullptr;
 }
 
 pInventory InventoryCollector::getInventoryById(unsigned long id)
 {
-    return m_inventories[id];
+    if (m_inventories.find(id) != m_inventories.end())
+        return m_inventories[id];
+    return nullptr;
 }

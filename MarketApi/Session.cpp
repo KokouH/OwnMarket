@@ -58,6 +58,7 @@ void Session::m_create_response(
 )
 {
     std::stringstream ss;
+    std::string cont_text;
 
     // TODO
     // Заглушка статуса ответа, отсутсвие заголовков в ответе
@@ -67,12 +68,15 @@ void Session::m_create_response(
     response = ss.str();
 
     EndPointArgs argsEndPoint = {collector, convertor, logger};
+    if (m_req.method == "POST")
+        cont_text = std::string(m_req.content.begin(), m_req.content.end());
+    if (m_req.method == "GET")
+        cont_text = m_req.uri;
 
     for (auto endPoint: endPoints)
     {
         if (endPoint == m_req.uri)
         {
-            std::string cont_text = std::string(m_req.content.begin(), m_req.content.end());
             endPoint(
                 cont_text,
                 argsEndPoint,

@@ -1,10 +1,15 @@
+#if !defined(S_URI_HPP)
+#define S_URI_HPP
+
 #include <string>
 #include <vector>
+#include <map>
 #include <algorithm>
+#include <iostream>
 
 #define OK_HTTP_STRING "HTTP/1.0 200 OK\r\n"
 
-struct param
+struct URIParam
 {
     std::string key;
     std::string value;
@@ -12,20 +17,34 @@ struct param
 
 class URI
 {
+using URI_IT = std::string::iterator;
 public:
-    std::string root;
-    std::vector<param> params;
+    std::map<std::string, std::string> params;
 
-    void Parse(std::string uri)
+    void Parse(std::string& uri)
     {
-        typedef std::string::iterator iterator_t;
+        URIParam temp;
+        URI_IT startParam, endParam, eqChar;
+        URI_IT argsStart = std::find(uri.begin(), uri.end() + uri.size(), '?');
         
-        if (uri.length() == 0)
+        if (argsStart == uri.end())
             return ;
 
-        iterator_t uriEnd = uri.end();
-        iterator_t queryStart = std::find(uri.begin(), uriEnd, L'?');
-        queryStart++;
-        
+        startParam = argsStart;
+        endParam = std::find(argsStart, uri.end(), '&');
+        while (startParam != uri.end())
+        {
+            eqChar = std::find(startParam, endParam, '=');
+            if (eqChar != endParam)
+            {
+                if (eqChar + 1 != endParam)
+                    params[std::string(startParam + 1, eqChar)] =
+                        std::string(eqChar + 1, endParam);
+            }
+            startParam = endParam;
+            endParam = std::find(startParam, uri.end(), '&');
+        }
     }
 };
+
+#endif
